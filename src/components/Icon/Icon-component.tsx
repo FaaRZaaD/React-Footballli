@@ -4,6 +4,7 @@ import { CgTrophy } from "react-icons/cg";
 import { FaFutbol } from "react-icons/fa";
 import { FiCompass } from "react-icons/fi";
 import { BsTv } from "react-icons/bs";
+import { FiClock } from "react-icons/fi";
 
 interface PropsType {
   name: string;
@@ -25,9 +26,11 @@ function Icon(props: PropsType) {
   }
   if (props.name === "FiCompass") {
     return <FiCompass style={{ color: props.color, fontSize: 30 }} />;
-  } else {
-    return "";
   }
+  if (props.name === "FiClock") {
+    return <FiClock style={{ color: props.color, fontSize: 30 }} />;
+  }
+  return "";
 }
 
 export default Icon;
