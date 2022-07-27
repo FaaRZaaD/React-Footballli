@@ -6,6 +6,7 @@ interface PropsType {
   bg?: string;
   children: React.ReactNode;
   style?: any;
+  alignment?: string;
 }
 
 function Stack(props: PropsType) {
@@ -15,6 +16,7 @@ function Stack(props: PropsType) {
         backgroundColor: props.bg,
         display: "flex",
         flexDirection: props.direction,
+        alignItems: props.alignment,
         justifyContent: props.distribution,
         ...props.style,
       }}

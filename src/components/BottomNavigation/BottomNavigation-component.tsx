@@ -1,12 +1,10 @@
 import React from "react";
 import Stack from "../Stack/Stack-component.tsx";
 import Box from "../Box/Box-component.tsx";
-import { FiUser } from "react-icons/fi";
-import { CgTrophy } from "react-icons/cg";
-import { FaFutbol } from "react-icons/fa";
-import { FiCompass } from "react-icons/fi";
-import { BsTv } from "react-icons/bs";
 import Divider from "../Divider/Divider-component.tsx";
+import useRoute from "../../hooks/useRoute.web.ts";
+import { useNavigate } from "react-router-dom";
+import Icon from "../Icon/Icon-component.tsx";
 
 let styles = {
   container: {
@@ -29,56 +27,61 @@ let styles = {
 
 const ROUTES = [
   {
-    key: "Home",
-    icon: <BsTv style={{ color: "green", fontSize: 30 }} />,
+    key: "Competitions",
+    icon: "BsTv",
     title: "مسابقات",
     active: true,
   },
   {
-    key: "Home",
-    icon: <FiCompass style={{ color: "#999999", fontSize: 30 }} />,
+    key: "Discovery",
+    icon: "FiCompass",
     title: "اکتشاف",
   },
   {
-    key: "Home",
-    icon: <FaFutbol style={{ color: "#999999", fontSize: 30 }} />,
+    key: "Football",
+    icon: "FaFutbol",
     title: "فوتبال",
   },
   {
-    key: "Orders",
-    icon: <CgTrophy style={{ color: "#999999", fontSize: 30 }} />,
+    key: "Leagues",
+    icon: "CgTrophy",
     title: "لیگ ها",
-    protected: true,
   },
   {
     key: "Profile",
-    icon: <FiUser style={{ color: "#999999", fontSize: 30 }} />,
+    icon: "FiUser",
     title: "پروفایل",
-    protected: true,
   },
 ];
 
 function BottomNavigation() {
+  let routeInfo = useRoute();
+  let nav = useNavigate();
   return (
     <Box style={styles.container}>
       <Stack style={styles.bar} distribution="space-between">
         {ROUTES.map((route, idx) => {
+          const isFocused = routeInfo.name == route.key;
           return (
             <button
               key={idx}
+              onClick={() => {
+                if (!isFocused) {
+                  nav(route.key);
+                }
+              }}
               style={{
                 cursor: "pointer",
                 backgroundColor: "#fff",
                 border: "none",
               }}
             >
-              {route.icon}
+              <Icon name={route.icon} color={isFocused ? "green" : "#999999"} />
               <Divider size={4} />
               <p
                 style={{
-                  color: route.active ? "green" : "#999999",
+                  color: isFocused ? "green" : "#999999",
                   margin: 0,
-                  fontFamily: "vazir-bold",
                 }}
               >
                 {route.title}
