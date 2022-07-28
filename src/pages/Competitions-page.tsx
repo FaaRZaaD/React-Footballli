@@ -1,12 +1,13 @@
 import dayjs from "dayjs";
 import React, { useEffect, useState } from "react";
 import { Helmet } from "react-helmet";
-import Icon from "../components/Icon/Icon-component.tsx";
 import Stack from "../components/Stack/Stack-component.tsx";
 import Box from "../components/Box/Box-component.tsx";
 import { formatNumber } from "../helpers/format-helper.ts";
 import { useCompetitionsData } from "../hooks/useCompetitionsData.ts";
 import Matches from "../components/Matches/Matches-component.tsx";
+import Header from "../containers/Header/Header-component.tsx";
+import Divider from "../components/Divider/Divider-component.tsx";
 
 function normalizeData(data) {
   let output: any = [];
@@ -44,7 +45,7 @@ function normalizeData(data) {
 
 function leagues(data) {
   let output: any = [];
-
+  console.log({ what: data });
   if (data) {
     data.forEach((item) => {
       let insertedItemIndex = output.findIndex((element) => {
@@ -57,15 +58,16 @@ function leagues(data) {
         output.push({
           league: item.league.name,
           logo: item.league.logo,
-          homeTeam: {
-            name: item.teams.home.name,
-            logo: item.teams.home.logo,
-          },
-          awayTeam: {
-            name: item.teams.away.name,
-            logo: item.teams.away.logo,
-          },
-          time: item.fixture.timestamp,
+          data: [item],
+          // homeTeam: {
+          //   name: item.teams.home.name,
+          //   logo: item.teams.home.logo,
+          // },
+          // awayTeam: {
+          //   name: item.teams.away.name,
+          //   logo: item.teams.away.logo,
+          // },
+          // time: item.fixture.timestamp,
         });
       }
     });
@@ -80,7 +82,7 @@ function Competitions() {
 
   useEffect(() => {
     retrieveCompetitionsData();
-  }, []);
+  });
 
   let datanew = normalizeData(data);
 
@@ -90,11 +92,8 @@ function Competitions() {
       <Helmet>
         <title>مسابقات</title>
       </Helmet>
-      <Stack distribution="space-between" alignment="center">
-        <Icon name="FiClock" color="#000000" />
-        <p>نتایج زنده</p>
-      </Stack>
-      <Box>
+      <Header />
+      <Box style={{ padding: 16 }}>
         {!!datanew
           ? datanew.map((item, index) => {
               return (
@@ -112,23 +111,27 @@ function Competitions() {
                   >
                     <p>{formatNumber(dayjs(item.date).format("DD MMMM"))}</p>
                   </button>
-                  <Stack bg="yellow">
+                  <Stack direction="column">
                     {selectedDay === item.date
                       ? leagues(item.data).map((i) => {
                           return (
-                            <Matches
-                              leagueTitle={i.league}
-                              logo={i.logo}
-                              homeTeam={{
-                                name: i.homeTeam.name,
-                                logo: i.homeTeam.logo,
-                              }}
-                              awayTeam={{
-                                name: i.awayTeam.name,
-                                logo: i.awayTeam.logo,
-                              }}
-                              time={i.time}
-                            />
+                            <>
+                              <Matches
+                                leagueTitle={i.league}
+                                logo={i.logo}
+                                data={i.data}
+                                // homeTeam={{
+                                //   name: i.homeTeam.name,
+                                //   logo: i.homeTeam.logo,
+                                // }}
+                                // awayTeam={{
+                                //   name: i.awayTeam.name,
+                                //   logo: i.awayTeam.logo,
+                                // }}
+                                // time={i.time}
+                              />
+                              <Divider size={16} />
+                            </>
                           );
                         })
                       : null}

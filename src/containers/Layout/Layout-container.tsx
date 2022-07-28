@@ -7,7 +7,7 @@ interface PropsType {
 
 function Layout(props: PropsType) {
   return (
-    <div style={{ maxWidth: 468, margin: "auto" }}>
+    <div style={{ maxWidth: 468, margin: "auto", paddingBottom: 80 }}>
       {props.children}
       <BottomNavigation />
     </div>
