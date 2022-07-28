@@ -21,6 +21,7 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background-color: #e6e6e6;
 }
 
 @font-face {
@@ -59,4 +60,5 @@ code {
 
 p {
   font-family: vazir-bold;
+  direction: rtl;
 }

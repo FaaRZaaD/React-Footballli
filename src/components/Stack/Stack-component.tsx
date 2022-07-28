@@ -7,17 +7,20 @@ interface PropsType {
   children: React.ReactNode;
   style?: any;
   alignment?: string;
+  onPress?: () => void;
 }
 
 function Stack(props: PropsType) {
   return (
     <div
+      onClick={props.onPress}
       style={{
         backgroundColor: props.bg,
         display: "flex",
         flexDirection: props.direction,
         alignItems: props.alignment,
         justifyContent: props.distribution,
+        direction: "rtl",
         ...props.style,
       }}
     >
