@@ -10,15 +10,6 @@ interface PropsType {
   leagueTitle: string;
   data: any;
   logo: string;
-  homeTeam: {
-    name: string;
-    logo: string;
-  };
-  awayTeam: {
-    name: string;
-    logo: string;
-  };
-  time: number;
 }
 
 function Matches(props: PropsType) {

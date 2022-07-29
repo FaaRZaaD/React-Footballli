@@ -132,26 +132,19 @@ function Competitions() {
         }
       />
       <Divider size={16} />
-      <Box style={{ padding: 0, margin: 0 }}>
-        <Stack direction="column">
-          <>
-            {!!leagues(selectedDayItems, selectedDay)
-              ? leagues(selectedDayItems, selectedDay).map((i) => {
-                  return (
-                    <>
-                      <Matches
-                        leagueTitle={i.league}
-                        logo={i.logo}
-                        data={i.data}
-                      />
-                      <Divider size={16} />
-                    </>
-                  );
-                })
-              : null}
-          </>
-        </Stack>
-      </Box>
+
+      <Stack direction="column">
+        {!!leagues(selectedDayItems, selectedDay)
+          ? leagues(selectedDayItems, selectedDay).map((i) => {
+              return (
+                <>
+                  <Matches leagueTitle={i.league} logo={i.logo} data={i.data} />
+                  <Divider size={16} />
+                </>
+              );
+            })
+          : null}
+      </Stack>
     </>
   );
 }
