@@ -108,6 +108,7 @@ function Competitions() {
                         border: "none",
                         marginLeft: 30,
                         position: "relative",
+                        color: selectedDay === item.date ? "#000000" : "#ccc",
                       }}
                     >
                       <p>{formatNumber(dayjs(item.date).format("DD MMMM"))}</p>

@@ -10,7 +10,7 @@ interface PropsType {
 
 function Header(props: PropsType) {
   return (
-    <Box bg="white" style={{ padding: 16 }}>
+    <Box bg="white" style={{ padding: "16px 16px 0 16px" }}>
       <Stack distribution="space-between" alignment="center">
         <p>نتایج زنده</p>
         <Icon name="FiClock" color="#000000" />

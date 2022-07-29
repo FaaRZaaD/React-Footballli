@@ -27,20 +27,9 @@ let styles = {
 
 const ROUTES = [
   {
-    key: "Competitions",
-    icon: "BsTv",
-    title: "مسابقات",
-    active: true,
-  },
-  {
-    key: "Discovery",
-    icon: "FiCompass",
-    title: "اکتشاف",
-  },
-  {
-    key: "Football",
-    icon: "FaFutbol",
-    title: "فوتبال",
+    key: "Profile",
+    icon: "FiUser",
+    title: "پروفایل",
   },
   {
     key: "Leagues",
@@ -48,9 +37,20 @@ const ROUTES = [
     title: "لیگ ها",
   },
   {
-    key: "Profile",
-    icon: "FiUser",
-    title: "پروفایل",
+    key: "Football",
+    icon: "FaFutbol",
+    title: "فوتبال",
+  },
+  {
+    key: "Discovery",
+    icon: "FiCompass",
+    title: "اکتشاف",
+  },
+  {
+    key: "Competitions",
+    icon: "BsTv",
+    title: "مسابقات",
+    active: true,
   },
 ];
 
