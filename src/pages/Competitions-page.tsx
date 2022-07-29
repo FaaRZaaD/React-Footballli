@@ -31,16 +31,15 @@ function normalizeData(data) {
       }
     });
   }
-  return output;
-  // return output.sort((a, b) => {
-  //   let a_date = a.date;
-  //   let b_date = b.date;
 
-  //   if (a_date === b_date) {
-  //     return 0;
-  //   }
-  //   return dayjs(a_date).isBefore(dayjs(b_date)) ? 1 : -1;
-  // });
+  return output.sort((a, b) => {
+    let a_date = a.date;
+    let b_date = b.date;
+    if (a_date === b_date) {
+      return 0;
+    }
+    return dayjs(a_date).isBefore(dayjs(b_date)) ? -1 : 1;
+  });
 }
 
 function leagues(data, selectedDay) {
