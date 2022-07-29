@@ -43,32 +43,24 @@ function normalizeData(data) {
   // });
 }
 
-function leagues(data) {
+function leagues(data, selectedDay) {
   let output: any = [];
-  console.log({ what: data });
   if (data) {
     data.forEach((item) => {
-      let insertedItemIndex = output.findIndex((element) => {
-        return element?.league === item?.league.name;
-      });
-
-      if (insertedItemIndex >= 0) {
-        output[insertedItemIndex].data.push(item);
-      } else {
-        output.push({
-          league: item.league.name,
-          logo: item.league.logo,
-          data: [item],
-          // homeTeam: {
-          //   name: item.teams.home.name,
-          //   logo: item.teams.home.logo,
-          // },
-          // awayTeam: {
-          //   name: item.teams.away.name,
-          //   logo: item.teams.away.logo,
-          // },
-          // time: item.fixture.timestamp,
+      if (selectedDay === item.fixture.date) {
+        let insertedItemIndex = output.findIndex((element) => {
+          return element?.league === item?.league.name;
         });
+
+        if (insertedItemIndex >= 0) {
+          output[insertedItemIndex].data.push(item);
+        } else {
+          output.push({
+            league: item.league.name,
+            logo: item.league.logo,
+            data: [item],
+          });
+        }
       }
     });
   }
@@ -78,68 +70,86 @@ function leagues(data) {
 
 function Competitions() {
   let { retrieveCompetitionsData, data } = useCompetitionsData();
-  let [selectedDay, setSelectedDay] = useState<string>();
+  let [selectedDay, setSelectedDay] = useState<string>(
+    "2022-07-28T16:00:00+00:00"
+  );
+  let [selectedDayItems, setSelectedDayItems] = useState();
 
   useEffect(() => {
     retrieveCompetitionsData();
-  });
+  }, []);
 
   let datanew = normalizeData(data);
 
-  console.log({ datanew });
   return (
     <>
       <Helmet>
         <title>مسابقات</title>
       </Helmet>
-      <Header />
-      <Box style={{ padding: 16 }}>
-        {!!datanew
-          ? datanew.map((item, index) => {
-              return (
-                <>
-                  <button
-                    key={index}
-                    onClick={() => {
-                      setSelectedDay(item.date);
-                    }}
-                    style={{
-                      cursor: "pointer",
-                      backgroundColor: "#fff",
-                      border: "none",
-                    }}
-                  >
-                    <p>{formatNumber(dayjs(item.date).format("DD MMMM"))}</p>
-                  </button>
-                  <Stack direction="column">
-                    {selectedDay === item.date
-                      ? leagues(item.data).map((i) => {
-                          return (
-                            <>
-                              <Matches
-                                leagueTitle={i.league}
-                                logo={i.logo}
-                                data={i.data}
-                                // homeTeam={{
-                                //   name: i.homeTeam.name,
-                                //   logo: i.homeTeam.logo,
-                                // }}
-                                // awayTeam={{
-                                //   name: i.awayTeam.name,
-                                //   logo: i.awayTeam.logo,
-                                // }}
-                                // time={i.time}
-                              />
-                              <Divider size={16} />
-                            </>
-                          );
-                        })
-                      : null}
-                  </Stack>
-                </>
-              );
-            })
-          : null}
+      <Header
+        timesheets={
+          <Stack
+            style={{
+              overflow: "hidden",
+            }}
+          >
+            {!!datanew
+              ? datanew.map((item, index) => {
+                  return (
+                    <button
+                      key={index}
+                      onClick={() => {
+                        setSelectedDay(item.date);
+                        setSelectedDayItems(item.data);
+                      }}
+                      style={{
+                        cursor: "pointer",
+                        backgroundColor: "#fff",
+                        border: "none",
+                        marginLeft: 30,
+                        position: "relative",
+                      }}
+                    >
+                      <p>{formatNumber(dayjs(item.date).format("DD MMMM"))}</p>
+                      <Box
+                        style={{
+                          position: "absolute",
+                          bottom: 0,
+                          right: 0,
+                          width: "100%",
+                          height: selectedDay === item.date ? 3 : null,
+                          borderTopRightRadius: 20,
+                          borderTopLeftRadius: 20,
+                          backgroundColor: "green",
+                        }}
+                      />
+                    </button>
+                  );
+                })
+              : null}
+          </Stack>
+        }
+      />
+      <Divider size={16} />
+      <Box style={{ padding: 0, margin: 0 }}>
+        <Stack direction="column">
+          <>
+            {!!leagues(selectedDayItems, selectedDay)
+              ? leagues(selectedDayItems, selectedDay).map((i) => {
+                  return (
+                    <>
+                      <Matches
+                        leagueTitle={i.league}
+                        logo={i.logo}
+                        data={i.data}
+                      />
+                      <Divider size={16} />
+                    </>
+                  );
+                })
+              : null}
+          </>
+        </Stack>
       </Box>
     </>
   );

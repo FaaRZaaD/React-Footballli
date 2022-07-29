@@ -23,7 +23,7 @@ interface PropsType {
 
 function Matches(props: PropsType) {
   let [open, setOpen] = useState(false);
-  console.log({ hey: props.data });
+
   return (
     <Box
       onPress={() => {
@@ -67,7 +67,6 @@ function Matches(props: PropsType) {
         <>
           <Divider size={3} line color="#e6e6e6" />
           {props.data.map((item, index) => {
-            console.log({ item });
             let lastIndex = index + 1 === props.data.length;
             return (
               <Box

@@ -4,7 +4,11 @@ import Stack from "../../components/Stack/Stack-component.tsx";
 import Icon from "../../components/Icon/Icon-component.tsx";
 import Divider from "../../components/Divider/Divider-component.tsx";
 
-function Header(props) {
+interface PropsType {
+  timesheets: React.ReactNode;
+}
+
+function Header(props: PropsType) {
   return (
     <Box bg="white" style={{ padding: 16 }}>
       <Stack distribution="space-between" alignment="center">
@@ -44,6 +48,7 @@ function Header(props) {
         </Stack>
       </Box>
       <Divider size={12} />
+      {props.timesheets}
     </Box>
   );
 }
