@@ -137,7 +137,7 @@ function Competitions() {
       />
       <Divider size={16} />
 
-      <Stack direction="column">
+      <Stack direction="column" style={{ padding: "0 16px" }}>
         {!!leaguesData
           ? leaguesData.map((i) => {
               return (
