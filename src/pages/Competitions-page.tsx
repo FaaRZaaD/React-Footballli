@@ -143,7 +143,12 @@ function Competitions() {
           ? leaguesData.map((i) => {
               return (
                 <>
-                  <Matches leagueTitle={i.league} logo={i.logo} data={i.data} />
+                  <Matches
+                    leagueTitle={i.league}
+                    logo={i.logo}
+                    data={i.data}
+                    selectedDay={selectedDay}
+                  />
                   <Divider size={16} />
                 </>
               );

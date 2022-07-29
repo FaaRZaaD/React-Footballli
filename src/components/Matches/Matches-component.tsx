@@ -1,5 +1,6 @@
 import dayjs from "dayjs";
 import React, { useState } from "react";
+import { useEffect } from "react";
 import { formatNumber } from "../../helpers/format-helper.ts";
 import Box from "../Box/Box-component.tsx";
 import Divider from "../Divider/Divider-component.tsx";
@@ -10,11 +11,15 @@ interface PropsType {
   leagueTitle: string;
   data: any;
   logo: string;
+  selectedDay: string;
 }
 
 function Matches(props: PropsType) {
   let [open, setOpen] = useState(false);
 
+  useEffect(() => {
+    setOpen(false);
+  }, [props.selectedDay]);
   return (
     <Box
       onPress={() => {
