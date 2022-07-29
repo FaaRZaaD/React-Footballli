@@ -31,7 +31,7 @@ function Matches(props: PropsType) {
       >
         <Stack alignment="center">
           <Box
-            bg="yellow"
+            bg="white"
             style={{
               width: 20,
               height: 20,

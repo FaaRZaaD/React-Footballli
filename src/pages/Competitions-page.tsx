@@ -44,23 +44,30 @@ function normalizeData(data) {
 }
 
 function leagues(data, selectedDay) {
+  let hello;
   let output: any = [];
   if (data) {
     data.forEach((item) => {
-      if (selectedDay === item.fixture.date) {
-        let insertedItemIndex = output.findIndex((element) => {
-          return element?.league === item?.league.name;
-        });
+      if (selectedDay === item.date) {
+        hello = item.data;
+      }
+    });
+  }
 
-        if (insertedItemIndex >= 0) {
-          output[insertedItemIndex].data.push(item);
-        } else {
-          output.push({
-            league: item.league.name,
-            logo: item.league.logo,
-            data: [item],
-          });
-        }
+  if (hello) {
+    hello.forEach((item) => {
+      let insertedItemIndex = output.findIndex((element) => {
+        return element.league === item.league.name;
+      });
+
+      if (insertedItemIndex >= 0) {
+        output[insertedItemIndex].data.push(item);
+      } else {
+        output.push({
+          league: item.league.name,
+          logo: item.league.logo,
+          data: [item],
+        });
       }
     });
   }
@@ -73,13 +80,12 @@ function Competitions() {
   let [selectedDay, setSelectedDay] = useState<string>(
     "2022-07-28T16:00:00+00:00"
   );
-  let [selectedDayItems, setSelectedDayItems] = useState();
-
+  let datanew = normalizeData(data);
   useEffect(() => {
     retrieveCompetitionsData();
   }, []);
 
-  let datanew = normalizeData(data);
+  let leaguesData = leagues(datanew, selectedDay);
 
   return (
     <>
@@ -100,7 +106,6 @@ function Competitions() {
                       key={index}
                       onClick={() => {
                         setSelectedDay(item.date);
-                        setSelectedDayItems(item.data);
                       }}
                       style={{
                         cursor: "pointer",
@@ -134,8 +139,8 @@ function Competitions() {
       <Divider size={16} />
 
       <Stack direction="column">
-        {!!leagues(selectedDayItems, selectedDay)
-          ? leagues(selectedDayItems, selectedDay).map((i) => {
+        {!!leaguesData
+          ? leaguesData.map((i) => {
               return (
                 <>
                   <Matches leagueTitle={i.league} logo={i.logo} data={i.data} />
