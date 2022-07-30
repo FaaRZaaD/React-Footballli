@@ -8,6 +8,7 @@ import { useCompetitionsData } from "../hooks/useCompetitionsData.ts";
 import Matches from "../components/Matches/Matches-component.tsx";
 import Header from "../containers/Header/Header-component.tsx";
 import Divider from "../components/Divider/Divider-component.tsx";
+import { FixedSizeList } from "react-window";
 
 function normalizeData(data) {
   let output: any = [];
@@ -96,6 +97,8 @@ function Competitions() {
           <Stack
             style={{
               overflow: "hidden",
+              overflowX: "scroll",
+              width: "100%",
             }}
           >
             {!!datanew
@@ -138,21 +141,34 @@ function Competitions() {
       <Divider size={16} />
 
       <Stack direction="column" style={{ padding: "0 16px" }}>
-        {!!leaguesData
-          ? leaguesData.map((i) => {
-              return (
-                <>
-                  <Matches
-                    leagueTitle={i.league}
-                    logo={i.logo}
-                    data={i.data}
-                    selectedDay={selectedDay}
-                  />
-                  <Divider size={16} />
-                </>
-              );
-            })
-          : null}
+        <FixedSizeList
+          height={480}
+          width="100%"
+          itemSize={1}
+          itemCount={leaguesData.length}
+        >
+          {({ style }) => {
+            return (
+              <div style={style}>
+                {!!leaguesData
+                  ? leaguesData.map((i) => {
+                      return (
+                        <>
+                          <Matches
+                            leagueTitle={i.league}
+                            logo={i.logo}
+                            data={i.data}
+                            selectedDay={selectedDay}
+                          />
+                          <Divider size={16} />
+                        </>
+                      );
+                    })
+                  : null}
+              </div>
+            );
+          }}
+        </FixedSizeList>
       </Stack>
     </>
   );
