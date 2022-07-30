@@ -101,7 +101,8 @@ function renderDate(date: string): string {
 }
 
 function Competitions() {
-  let { retrieveCompetitionsData, data, loading } = useCompetitionsData();
+  let { retrieveCompetitionsData, data, loading, hasError } =
+    useCompetitionsData();
   let [selectedDay, setSelectedDay] = useState<string>(
     dayjs().format("YYYY-MM-DD")
   );
@@ -179,7 +180,13 @@ function Competitions() {
           <Loading />
         </Stack>
       ) : null}
-      {!loading && !!leaguesData ? (
+      {!loading && hasError ? (
+        <Stack distribution="center">
+          <Divider size={24} />
+          <p>مشکلی در سرور گیش آمده است.</p>
+        </Stack>
+      ) : null}
+      {!loading && !hasError && !!leaguesData ? (
         <Stack direction="column" style={{ padding: "0 16px" }}>
           <FixedSizeList
             height={480}

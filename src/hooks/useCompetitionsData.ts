@@ -1,11 +1,14 @@
 import axios from "axios";
 import { useState } from "react";
+import { CompetitionsDataType } from "../types/server.ts";
 
 export function useCompetitionsData() {
-  let [data, setData] = useState<any>();
-  let [loading, setLoading] = useState<Boolean>(false);
+  let [data, setData] = useState<CompetitionsDataType[]>();
+  let [loading, setLoading] = useState(false);
+  let [hasError, setHasError] = useState(null);
   function retrieveCompetitionsData() {
     setLoading(true);
+    setHasError(null);
     return axios
       .get("https://v3.football.api-sports.io/fixtures?live=all", {
         headers: {
@@ -1259,11 +1262,13 @@ export function useCompetitionsData() {
           },
         ]);
       })
-      .catch()
+      .catch((error) => {
+        setHasError(error);
+      })
       .finally(() => {
         setLoading(false);
       });
   }
 
-  return { retrieveCompetitionsData, data, loading };
+  return { retrieveCompetitionsData, data, loading, hasError };
 }
