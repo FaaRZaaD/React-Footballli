@@ -31,27 +31,6 @@ body {
   font-style: normal;
   font-display: block;
 }
-@font-face {
-  font-family: "vazir-thin";
-  src: url("./resources/fonts/Vazir-Thin.woff") format("woff");
-  font-weight: normal;
-  font-style: normal;
-  font-display: block;
-}
-@font-face {
-  font-family: "vazir-thin";
-  src: url("./resources/fonts/Vazir-Thin.woff") format("woff");
-  font-weight: normal;
-  font-style: normal;
-  font-display: block;
-}
-@font-face {
-  font-family: "vazir-regular";
-  src: url("./resources/fonts/Vazir.woff") format("woff");
-  font-weight: normal;
-  font-style: normal;
-  font-display: block;
-}
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",

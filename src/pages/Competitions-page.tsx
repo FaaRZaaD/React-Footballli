@@ -3,118 +3,16 @@ import React, { useEffect, useState } from "react";
 import { Helmet } from "react-helmet";
 import Stack from "../components/Stack/Stack-component.tsx";
 import Box from "../components/Box/Box-component.tsx";
-import { formatNumber } from "../helpers/format-helper.ts";
 import { useCompetitionsData } from "../hooks/useCompetitionsData.ts";
 import Matches from "../components/Matches/Matches-component.tsx";
 import CompetitionsHeader from "../containers/CompetitionsHeader/CompetitionsHeader-container.tsx";
 import Divider from "../components/Divider/Divider-component.tsx";
 import { FixedSizeList } from "react-window";
-import { dayTitle } from "../helpers/date.ts";
 import Loading from "../components/Loading/Loading-component.tsx";
 import { getWindowDimensions } from "../helpers/windowSize-helper.ts";
-import { CompetitionsDataType } from "../types/server.ts";
-
-interface NormalizeDataType {
-  date: string;
-  data: CompetitionsDataType[];
-}
-
-interface FilterDataByLeaguesType {
-  league: string;
-  logo: string;
-  data: NormalizeDataType[];
-}
-
-function normalizeData(data: CompetitionsDataType[]): NormalizeDataType[] {
-  let output: NormalizeDataType[] = [];
-
-  if (data) {
-    data.forEach((item) => {
-      let insertedItemIndex = output.findIndex((element) => {
-        return (
-          dayjs(element?.date).format("D MMMM YY") ===
-          dayjs(item?.fixture.date).format("D MMMM YY")
-        );
-      });
-
-      if (insertedItemIndex >= 0) {
-        output[insertedItemIndex].data.push(item);
-      } else {
-        output.push({
-          date: item.fixture.date,
-          data: [item],
-        });
-      }
-    });
-  }
-
-  return output.sort((a, b) => {
-    let a_date = a.date;
-    let b_date = b.date;
-    if (a_date === b_date) {
-      return 0;
-    }
-    return dayjs(a_date).isBefore(dayjs(b_date)) ? -1 : 1;
-  });
-}
-
-function filterDataByLeagues(
-  data: NormalizeDataType[],
-  selectedDay: string
-): FilterDataByLeaguesType[] {
-  let filterDataBySelectedDay: CompetitionsDataType[] = [];
-  let output: FilterDataByLeaguesType[] = [];
-  if (data) {
-    data.forEach((item) => {
-      if (selectedDay === dayjs(item.date).format("YYYY-MM-DD")) {
-        filterDataBySelectedDay = item.data;
-      }
-    });
-  }
-
-  if (filterDataBySelectedDay) {
-    filterDataBySelectedDay.forEach((item) => {
-      let insertedItemIndex = output.findIndex((element) => {
-        return element.league === item.league.name;
-      });
-
-      if (insertedItemIndex >= 0) {
-        output[insertedItemIndex].data.push(item);
-      } else {
-        output.push({
-          league: item.league.name,
-          logo: item.league.logo,
-          data: [item],
-        });
-      }
-    });
-  }
-
-  return output;
-}
-
-function renderDate(date: string): string {
-  let output: string;
-  let today = dayjs().format("YYYY-MM-DD");
-  let yesterday = dayjs().subtract(1, "day").format("YYYY-MM-DD");
-  let tomorrow = dayjs().add(1, "day").format("YYYY-MM-DD");
-  let formatedDate = dayjs(date).format("YYYY-MM-DD");
-  let diff = dayjs(formatedDate).diff(today, "days");
-
-  if (formatedDate === today) {
-    output = "امروز";
-  } else if (formatedDate === yesterday) {
-    output = "دیروز";
-  } else if (formatedDate === tomorrow) {
-    output = "فردا";
-  } else if (diff > 7) {
-    output = formatNumber(dayjs(date).format("D MMMM"));
-  } else {
-    output = formatNumber(dayTitle(dayjs(date).toDate()));
-  }
-
-  return output;
-}
+import { normalizeData } from "../helpers/general-helper.ts";
+import { filterDataByLeagues } from "../helpers/general-helper.ts";
+import { dateRender } from "../helpers/general-helper.ts";
 
 function Competitions() {
   let { height } = getWindowDimensions();
@@ -165,7 +63,7 @@ function Competitions() {
                         whiteSpace: "nowrap",
                       }}
                     >
-                      <p>{renderDate(item.date)}</p>
+                      <p>{dateRender(item.date)}</p>
                       <Box
                         style={{
                           position: "absolute",
