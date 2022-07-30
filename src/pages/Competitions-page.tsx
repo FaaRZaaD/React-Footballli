@@ -6,14 +6,27 @@ import Box from "../components/Box/Box-component.tsx";
 import { formatNumber } from "../helpers/format-helper.ts";
 import { useCompetitionsData } from "../hooks/useCompetitionsData.ts";
 import Matches from "../components/Matches/Matches-component.tsx";
-import Header from "../containers/Header/Header-component.tsx";
+import CompetitionsHeader from "../containers/CompetitionsHeader/CompetitionsHeader-container.tsx";
 import Divider from "../components/Divider/Divider-component.tsx";
 import { FixedSizeList } from "react-window";
 import { dayTitle } from "../helpers/date.ts";
 import Loading from "../components/Loading/Loading-component.tsx";
+import { getWindowDimensions } from "../helpers/windowSize-helper.ts";
+import { CompetitionsDataType } from "../types/server.ts";
 
-function normalizeData(data) {
-  let output: any = [];
+interface NormalizeDataType {
+  date: string;
+  data: CompetitionsDataType[];
+}
+
+interface FilterDataByLeaguesType {
+  league: string;
+  logo: string;
+  data: NormalizeDataType[];
+}
+
+function normalizeData(data: CompetitionsDataType[]): NormalizeDataType[] {
+  let output: NormalizeDataType[] = [];
 
   if (data) {
     data.forEach((item) => {
@@ -45,19 +58,22 @@ function normalizeData(data) {
   });
 }
 
-function leagues(data, selectedDay) {
-  let hello;
-  let output: any = [];
+function filterDataByLeagues(
+  data: NormalizeDataType[],
+  selectedDay: string
+): FilterDataByLeaguesType[] {
+  let filterDataBySelectedDay: CompetitionsDataType[] = [];
+  let output: FilterDataByLeaguesType[] = [];
   if (data) {
     data.forEach((item) => {
       if (selectedDay === dayjs(item.date).format("YYYY-MM-DD")) {
-        hello = item.data;
+        filterDataBySelectedDay = item.data;
       }
     });
   }
 
-  if (hello) {
-    hello.forEach((item) => {
+  if (filterDataBySelectedDay) {
+    filterDataBySelectedDay.forEach((item) => {
       let insertedItemIndex = output.findIndex((element) => {
         return element.league === item.league.name;
       });
@@ -101,24 +117,25 @@ function renderDate(date: string): string {
 }
 
 function Competitions() {
+  let { height } = getWindowDimensions();
   let { retrieveCompetitionsData, data, loading, hasError } =
     useCompetitionsData();
   let [selectedDay, setSelectedDay] = useState<string>(
     dayjs().format("YYYY-MM-DD")
   );
-  let datanew = normalizeData(data);
+  let normalizedData = normalizeData(data);
+  let leaguesData = filterDataByLeagues(normalizedData, selectedDay);
+
   useEffect(() => {
     retrieveCompetitionsData();
   }, []);
-
-  let leaguesData = leagues(datanew, selectedDay);
 
   return (
     <>
       <Helmet>
         <title>مسابقات</title>
       </Helmet>
-      <Header
+      <CompetitionsHeader
         timesheets={
           <Stack
             style={{
@@ -127,13 +144,14 @@ function Competitions() {
               width: "100%",
             }}
           >
-            {!loading && !!datanew
-              ? datanew.map((item, index) => {
+            {!loading && !!normalizedData
+              ? normalizedData.map((item, index) => {
+                  let formatedDate = dayjs(item.date).format("YYYY-MM-DD");
                   return (
                     <button
                       key={index}
                       onClick={() => {
-                        setSelectedDay(dayjs(item.date).format("YYYY-MM-DD"));
+                        setSelectedDay(formatedDate);
                       }}
                       style={{
                         cursor: "pointer",
@@ -142,9 +160,7 @@ function Competitions() {
                         marginLeft: 30,
                         position: "relative",
                         color:
-                          selectedDay === dayjs(item.date).format("YYYY-MM-DD")
-                            ? "#000000"
-                            : "#ccc",
+                          selectedDay === formatedDate ? "#000000" : "#ccc",
                         padding: "10px 0",
                         whiteSpace: "nowrap",
                       }}
@@ -156,11 +172,7 @@ function Competitions() {
                           bottom: 0,
                           right: 0,
                           width: "100%",
-                          height:
-                            selectedDay ===
-                            dayjs(item.date).format("YYYY-MM-DD")
-                              ? 3
-                              : null,
+                          height: selectedDay === formatedDate ? 3 : 0,
                           borderTopRightRadius: 20,
                           borderTopLeftRadius: 20,
                           backgroundColor: "green",
@@ -189,7 +201,7 @@ function Competitions() {
       {!loading && !hasError && !!leaguesData ? (
         <Stack direction="column" style={{ padding: "0 16px" }}>
           <FixedSizeList
-            height={480}
+            height={height - 280}
             width="100%"
             itemSize={1}
             itemCount={leaguesData.length}

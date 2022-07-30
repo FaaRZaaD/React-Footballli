@@ -8,7 +8,7 @@ interface PropsType {
   timesheets: React.ReactNode;
 }
 
-function Header(props: PropsType) {
+function CompetitionsHeader(props: PropsType) {
   return (
     <Box bg="white" style={{ padding: "16px 16px 0 16px" }}>
       <Stack distribution="space-between" alignment="center">
@@ -53,4 +53,4 @@ function Header(props: PropsType) {
   );
 }
 
-export default Header;
+export default CompetitionsHeader;
