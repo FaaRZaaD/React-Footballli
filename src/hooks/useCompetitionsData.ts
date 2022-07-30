@@ -3,7 +3,9 @@ import { useState } from "react";
 
 export function useCompetitionsData() {
   let [data, setData] = useState<any>();
+  let [loading, setLoading] = useState<Boolean>(false);
   function retrieveCompetitionsData() {
+    setLoading(true);
     return axios
       .get("https://v3.football.api-sports.io/fixtures?live=all", {
         headers: {
@@ -1256,8 +1258,12 @@ export function useCompetitionsData() {
             },
           },
         ]);
+      })
+      .catch()
+      .finally(() => {
+        setLoading(false);
       });
   }
 
-  return { retrieveCompetitionsData, data };
+  return { retrieveCompetitionsData, data, loading };
 }

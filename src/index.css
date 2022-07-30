@@ -63,3 +63,12 @@ p {
   direction: rtl;
   margin: 0;
 }
+
+@keyframes spin-anim {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(460deg);
+  }
+}

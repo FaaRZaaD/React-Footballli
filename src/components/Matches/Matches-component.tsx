@@ -64,6 +64,10 @@ function Matches(props: PropsType) {
           <Divider size={3} line color="#e6e6e6" />
           {props.data.map((item, index) => {
             let lastIndex = index + 1 === props.data.length;
+            let today = dayjs().format("YYYY-MM-DD");
+            let day = dayjs(item.fixture.date).format("YYYY-MM-DD");
+            let diff = dayjs(day).diff(today, "days");
+
             return (
               <Box
                 style={{
@@ -94,11 +98,17 @@ function Matches(props: PropsType) {
                     </Box>
                   </Stack>
                   <Spacer size={10} />
-                  <p>
-                    {formatNumber(
-                      dayjs(item.fixture.timestamp).format("HH:mm")
-                    )}
-                  </p>
+                  {diff >= 0 ? (
+                    <p>
+                      {formatNumber(
+                        dayjs(item.fixture.timestamp).format("HH:mm")
+                      )}
+                    </p>
+                  ) : (
+                    <p>
+                      {item.goals.home} - {item.goals.away}
+                    </p>
+                  )}
                   <Spacer size={10} />
                   <Stack alignment="center">
                     <Box
