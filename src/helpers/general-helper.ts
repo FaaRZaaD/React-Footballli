@@ -94,10 +94,10 @@ export function dateRender(date: string): string {
     output = "دیروز";
   } else if (formatedDate === tomorrow) {
     output = "فردا";
-  } else if (diff > 6) {
-    output = formatNumber(dayjs(date).format("D MMMM"));
-  } else {
+  } else if (diff < 6 && diff > -6) {
     output = formatNumber(dayTitle(dayjs(date).toDate()));
+  } else {
+    output = formatNumber(dayjs(date).format("D MMMM"));
   }
 
   return output;

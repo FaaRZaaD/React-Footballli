@@ -29,8 +29,8 @@ function MatchRow(props: PropsType) {
       }}
     >
       <Stack distribution="center">
-        <Stack alignment="center">
-          <p>{props.home.name}</p>
+        <Stack alignment="center" distribution="end" style={{ width: "40%" }}>
+          <p style={{ fontSize: 14 }}>{props.home.name}</p>
           <Spacer size={5} />
           <Box
             style={{
@@ -50,14 +50,20 @@ function MatchRow(props: PropsType) {
         </Stack>
         <Spacer size={10} />
         {!props.isPastDay ? (
-          <p>{formatNumber(dayjs(props.time).format("HH:mm"))}</p>
+          <Stack alignment="center">
+            <p style={{ fontSize: 14 }}>
+              {formatNumber(dayjs(props.time).format("HH:mm"))}
+            </p>
+          </Stack>
         ) : (
-          <p>
-            {props.home.goals} - {props.away.goals}
-          </p>
+          <Stack alignment="center">
+            <p style={{ fontSize: 14 }}>
+              {props.home.goals} - {props.away.goals}
+            </p>
+          </Stack>
         )}
         <Spacer size={10} />
-        <Stack alignment="center">
+        <Stack alignment="center" style={{ width: "40%" }}>
           <Box
             style={{
               width: 20,
@@ -74,7 +80,7 @@ function MatchRow(props: PropsType) {
             />
           </Box>
           <Spacer size={5} />
-          <p>{props.away.name}</p>
+          <p style={{ fontSize: 14 }}>{props.away.name}</p>
         </Stack>
       </Stack>
     </Box>

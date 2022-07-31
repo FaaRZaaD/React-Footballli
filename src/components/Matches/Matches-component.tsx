@@ -1,6 +1,5 @@
 import dayjs from "dayjs";
 import React, { useState } from "react";
-import { useEffect } from "react";
 import { NormalizeDataType } from "../../types/shares.ts";
 import Box from "../Box/Box-component.tsx";
 import Divider from "../Divider/Divider-component.tsx";
@@ -17,18 +16,19 @@ interface PropsType {
 }
 
 function Matches(props: PropsType) {
-  let [open, setOpen] = useState(false);
+  let [open, setOpen] = useState(true);
 
-  useEffect(() => {
-    setOpen(false);
-  }, [props.selectedDay]);
   return (
     <Box
       onPress={() => {
         setOpen(!open);
       }}
       bg="white"
-      style={{ width: "100%", borderRadius: 12, cursor: "pointer" }}
+      style={{
+        width: "100%",
+        borderRadius: 12,
+        cursor: "pointer",
+      }}
     >
       <Stack
         distribution="space-between"

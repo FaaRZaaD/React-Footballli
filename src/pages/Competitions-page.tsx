@@ -16,11 +16,10 @@ import { dateRender } from "../helpers/general-helper.ts";
 
 function Competitions() {
   let { height } = getWindowDimensions();
+  let today = dayjs().format("YYYY-MM-DD");
   let { retrieveCompetitionsData, data, loading, hasError } =
     useCompetitionsData();
-  let [selectedDay, setSelectedDay] = useState<string>(
-    dayjs().format("YYYY-MM-DD")
-  );
+  let [selectedDay, setSelectedDay] = useState<string>(today);
   let normalizedData = normalizeData(data);
   let leaguesData = filterDataByLeagues(normalizedData, selectedDay);
 
@@ -96,13 +95,19 @@ function Competitions() {
           <p>مشکلی در سرور گیش آمده است.</p>
         </Stack>
       ) : null}
+      {!loading && !!leaguesData && leaguesData.length === 0 ? (
+        <Stack distribution="center">
+          <Divider size={24} />
+          <p>نتیجه ای وجود ندارد.</p>
+        </Stack>
+      ) : null}
       {!loading && !hasError && !!leaguesData ? (
         <Stack direction="column" style={{ padding: "0 16px" }}>
           <FixedSizeList
             height={height - 280}
             width="100%"
-            itemSize={1}
-            itemCount={leaguesData.length}
+            itemSize={leaguesData.length}
+            itemCount={1}
           >
             {({ style }) => {
               return (
